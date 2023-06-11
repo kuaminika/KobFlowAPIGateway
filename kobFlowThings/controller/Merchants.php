@@ -12,7 +12,8 @@ class MerchantsController extends AController
         try
         {// should inject instead
         $curlTool = new KCurlTool();
-       $data =  $curlTool->execute("https://localhost:5001/Merchant");//("https://baconipsum.com/api/?type=meat-and-filler");
+       $data =  $curlTool->execute("http://localhost:5000/Merchant");//
+      // $data =  $curlTool->execute("https://baconipsum.com/api/?type=meat-and-filler");
         $this->response['body']=$data;
         }
         catch(\Exception $ex)
