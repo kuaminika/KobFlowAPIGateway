@@ -16,6 +16,7 @@ class ControllerToolBox
            , "requestAction"  => isset($createParams["requestAction"]) ? $createParams["requestAction"]:"index"
            ,"requestParams"  => $createParams["requestParams"]
            ,"requestMethod"  => isset($createParams["requestMethod"]) ? $createParams["requestMethod"]:"GET"
+           ,"otherConfigs"=> $configs->getConfig("otherConfigs")
        ); 
 
        $result = new ControllerToolBox($param);
@@ -29,8 +30,14 @@ class ControllerToolBox
         $this->requestAction = $param["requestAction"];
         $this->requestParams = $param["requestParams"];
         $this->requestMethod = $param["requestMethod"];
+        $this->otherConfigs = $param["otherConfigs"];
     }
 
+    public function getOtherConfigs()
+    {
+        return  $this->otherConfigs;
+
+    }
     public function getRequestParams()
     {
         return $this->requestParams;

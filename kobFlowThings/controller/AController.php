@@ -14,6 +14,7 @@ abstract class AController
     private $params;
     protected $response;
     private $kTokenFacade;
+    protected $otherConfigs;
 
     protected $messageMap;  
 
@@ -26,6 +27,7 @@ abstract class AController
       $this->response = ["status_code_header"=>"HTTP/1.1 200 OK",
                         "body"=>json_encode([])
                         ];
+      $this->otherConfigs = $toolbox->getOtherConfigs();
     
     }
 
