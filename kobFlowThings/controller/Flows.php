@@ -21,9 +21,8 @@ class FlowsController extends AController
             $sourceContext = $params["sourceContext"];
             $port = $this->portBoard[$sourceContext];
 
-            $data = $curlTool->execute("http://localhost:$port/$sourceContext");//
-      // $data =  $curlTool->execute("https://baconipsum.com/api/?type=meat-and-filler");
-        $this->response['body']=$data;
+            $data = $curlTool->execute("http://localhost:$port/$sourceContext");
+            $this->response['body']=$data;
         }
         catch(\Exception $ex)
         {
@@ -32,5 +31,50 @@ class FlowsController extends AController
         }
     }
     
+    //POST
+    public function add($params)
+    {
+
+        try
+        {// should inject instead
+            
+            $params = $params["jsonValue"];
+            if(!property_exists($params,"payLoad")) {    $this->handleError("payLoad is missing");}
+         
+            $content = $params->payLoad;//["payLoad"];
+            $curlTool = new KCurlTool();
+            if(!property_exists($params,"sourceContext"))     $this->handleError("payLoad is missing");
+            $sourceContext = $params->sourceContext;//["sourceContext"];
+
+
+            $port = $this->portBoard[$sourceContext];
+            $data = get_object_vars($content);
+           $data = $curlTool->executePost("http://localhost:$port/$sourceContext/Add",$data);
+            $this->response['body']=$data;
+        }
+        catch(Exception $ex)
+        {
+            echo "its caught";
+        //   throw KException::createWithException($ex,"KobFlowsController.getAll");
+
+        }
+    }
+
+
+    public function whatISent($content)
+    {
+        
+        try
+        {
+            
+            $this->response['status_code_header'] = 'HTTP/1.1 200 OK';
+            $this->response['body'] = json_encode($content["jsonValue"]);
+                }
+        catch(\Exception $ex)
+        {
+            throw KException::createWithException($ex,"KobFlowsController.getAll");
+
+        }
+    }
   
 }
