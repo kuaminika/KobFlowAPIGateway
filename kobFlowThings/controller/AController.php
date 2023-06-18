@@ -68,6 +68,23 @@ abstract class AController
 
 
     }
+
+    protected function handleError($errorMessage)
+    { 
+      $error = $errorMessage;
+
+      $this->response['status_code_header'] = 'HTTP/1.1 500 ERROR';
+      $this->response['body'] = json_encode($error);
+      
+      
+      $this->logAndSend("exception","processRequest",$error);
+
+     header($this->response['status_code_header']);
+      echo $this->response['body'];
+      exit;
+
+    }
+
     public function processRequest()
     {
         try 
