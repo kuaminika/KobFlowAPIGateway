@@ -59,6 +59,35 @@ class FlowsController extends AController
 
         }
     }
+    
+    //POST
+    public function delete($params)
+    {
+
+        try
+        {// should inject instead
+            
+            $params = $params["jsonValue"];
+            if(!property_exists($params,"payLoad")) {    $this->handleError("payLoad is missing");}
+         
+            $content = $params->payLoad;//["payLoad"];
+            $curlTool = new KCurlTool();
+            if(!property_exists($params,"sourceContext"))     $this->handleError("payLoad is missing");
+            $sourceContext = $params->sourceContext;//["sourceContext"];
+
+
+            $port = $this->portBoard[$sourceContext];
+            $data = get_object_vars($content);
+           $data = $curlTool->executePost("http://localhost:$port/$sourceContext/Delete",$data);
+            $this->response['body']=$data;
+        }
+        catch(Exception $ex)
+        {
+            echo "its caught";
+        //   throw KException::createWithException($ex,"KobFlowsController.getAll");
+
+        }
+    }
     //POST
     public function add($params)
     {
