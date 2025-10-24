@@ -62,21 +62,21 @@ jobs:
 
             echo "Writing ModuleConfig.json..."
             cat > $CONFIG_FILE <<EOL
-{
-  "ControllerNamespace": "${{ vars.CONTROLLER_NAMESPACE }}",
-  "messageMap": "",
-  "otherConfigs": {
-    "portBoard": {
-      "Expense": ${{ vars.EXPENSE_PORT }},
-      "ExpenseCategory": ${{ vars.EXPENSE_CATEGORY_PORT }},
-      "Income": ${{ vars.INCOME_PORT }},
-      "Merchant": ${{ vars.MERCHANT_PORT }},
-      "IncomeSource": ${{ vars.INCOME_SOURCE_PORT }},
-      "IncomeCategory": ${{ vars.INCOME_CATEGORY_PORT }},
-      "KobHolder": ${{ vars.KOB_HOLDER_PORT }}
-    }
-  }
-}
-EOL
+                  {
+                    "ControllerNamespace": "${{ vars.CONTROLLER_NAMESPACE }}",
+                    "messageMap": "",
+                    "otherConfigs": {
+                      "portBoard": {
+                        "Expense": ${{ vars.EXPENSE_PORT }},
+                        "ExpenseCategory": ${{ vars.EXPENSE_CATEGORY_PORT }},
+                        "Income": ${{ vars.INCOME_PORT }},
+                        "Merchant": ${{ vars.MERCHANT_PORT }},
+                        "IncomeSource": ${{ vars.INCOME_SOURCE_PORT }},
+                        "IncomeCategory": ${{ vars.INCOME_CATEGORY_PORT }},
+                        "KobHolder": ${{ vars.KOB_HOLDER_PORT }}
+                      }
+                    }
+                  }
+                  EOL
 
             echo "✅ ModuleConfig.json written successfully!"
