@@ -10,6 +10,7 @@ jobs:
   # 1️⃣ BUILD JOB — Creates ZIP artifact
   build:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'PROD' || 'DEV' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,6 +30,7 @@ jobs:
   # 2️⃣ UPLOAD JOB — Sends ZIP to VPS
   upload:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'PROD' || 'DEV' }}
     needs: build
     steps:
       - name: Download artifact
