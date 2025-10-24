@@ -51,9 +51,9 @@ try{
     unset($requestParams["context"]);
     unset($requestParams["requestAction"]);
 
- echo json_encode($request);
+// echo json_encode($request);
 
-    $controllerNamespace =   $configReader->getConfig("ControllerNamespcae");
+    $controllerNamespace =   $configReader->getConfig("ControllerNamespace");
     $controllerName = $controllerNamespace. $request["context"]."Controller";
 
     $controllerExists = class_exists($controllerName);
