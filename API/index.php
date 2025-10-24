@@ -53,7 +53,7 @@ try{
 
 // echo json_encode($request);
 
-    $controllerNamespace =   $configReader->getConfig("ControllerNamespcae");
+    $controllerNamespace =   $configReader->getConfig("ControllerNamespace");
     $controllerName = $controllerNamespace. $request["context"]."Controller";
 
     $controllerExists = class_exists($controllerName);
