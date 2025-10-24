@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - dev   # DEV branch
-      - main  # PROD branch
+      - master  # PROD branch
 
 jobs:
   # 1️⃣ BUILD JOB — Creates ZIP artifact
   build:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'PROD' || 'DEV' }}
+    environment: ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
