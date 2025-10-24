@@ -1,0 +1,82 @@
+name: 🚀 Deploy KobFlow API Gateway
+
+on:
+  push:
+    branches:
+      - dev   # DEV branch
+      - main  # PROD branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'PROD' || 'DEV' }}
+
+    steps:
+      # 1️⃣ Checkout repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Create ZIP artifact
+      - name: Create ZIP artifact
+        run: |
+          ARTIFACT="kobflow.zip"
+          zip -r $ARTIFACT . -x "*.git*" "*.github*" "*.DS_Store"
+          echo "ZIP created: $ARTIFACT"
+
+      # 3️⃣ Upload ZIP to VPS
+      - name: Upload ZIP via SCP
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "kobflow.zip"
+          target: ${{ vars.ENV_DIR }}
+
+      # 4️⃣ Extract ZIP on VPS
+      - name: Extract ZIP on VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ vars.ENV_DIR }}
+            unzip -o kobflow.zip -d .
+            rm kobflow.zip
+            echo "✅ Code deployed successfully"
+
+      # 5️⃣ Generate ModuleConfig.json dynamically
+      - name: Generate ModuleConfig.json
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            ENV_DIR=${{ vars.ENV_DIR }}
+            CONFIG_FILE="$ENV_DIR/ModuleConfig.json"
+
+            echo "Writing ModuleConfig.json..."
+            cat > $CONFIG_FILE <<EOL
+{
+  "ControllerNamespace": "${{ vars.CONTROLLER_NAMESPACE }}",
+  "messageMap": "",
+  "otherConfigs": {
+    "portBoard": {
+      "Expense": ${{ vars.EXPENSE_PORT }},
+      "ExpenseCategory": ${{ vars.EXPENSE_CATEGORY_PORT }},
+      "Income": ${{ vars.INCOME_PORT }},
+      "Merchant": ${{ vars.MERCHANT_PORT }},
+      "IncomeSource": ${{ vars.INCOME_SOURCE_PORT }},
+      "IncomeCategory": ${{ vars.INCOME_CATEGORY_PORT }},
+      "KobHolder": ${{ vars.KOB_HOLDER_PORT }}
+    }
+  }
+}
+EOL
+
+            echo "✅ ModuleConfig.json written successfully!"
