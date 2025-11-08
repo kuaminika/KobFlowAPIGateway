@@ -35,5 +35,5 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 $res= $gtv->verify($input["id_token"]);
 //echo "$provider/$action";
-$res->input = $input;
+$res["input"] = $input;
 echo json_encode($res);
