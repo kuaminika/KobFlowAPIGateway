@@ -40,6 +40,8 @@ $res["input"] = $input;
 
 $port = 5038;
 $data = $res["payload"];
+$data["providerUserId"] = $data["sub"];
+$data["provider"]="google"; //TODO : this should not be hardcoded
 
 $curlTool = new KCurlTool();
  $data = $curlTool->executePost("http://localhost:$port/api/findOrCreateUser",$data);
