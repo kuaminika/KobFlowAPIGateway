@@ -45,5 +45,5 @@ $data["provider"]="google"; //TODO : this should not be hardcoded
 
 $curlTool = new KCurlTool();
  $data = $curlTool->executePost("http://localhost:$port/api/findOrCreateUser",$data);
-       
- echo json_encode($data);
+ $res["output"] =$data;     
+ echo json_encode($res);
