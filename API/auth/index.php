@@ -30,12 +30,12 @@ $res= $gtv->verify($input["id_token"]);
 $res["input"] = $input;
 //echo json_encode($res);
 
-$port =  $envReader->get("USER_SERVICE_PORT"); 
+$port =  $envReader->get("USER_SERVICE_PORT",true); 
 $data = $res["payload"];
 $data["providerUserId"] = $data["sub"];
 $data["provider"]="google"; //TODO : this should not be hardcoded
 
 $curlTool = new KCurlTool();
  $data = $curlTool->executePost("http://localhost:$port/api/findOrCreateUser",$data);
- $res["output"] =$data;     
+ $res["output"] =json_encode(json_decode($data));     
  echo json_encode($res);
