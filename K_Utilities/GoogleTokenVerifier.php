@@ -1,4 +1,6 @@
 <?php
+
+namespace K_Utilities;
 /**
  * GoogleTokenVerifier
  * Lightweight helper to verify and decode a Google ID token without Composer.

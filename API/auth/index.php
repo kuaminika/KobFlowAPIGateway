@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once dirname(__FILE__)."/../../K_Utilities/_requireAll.php";
 use K_Utilities\KCurlTool;
+use K_Utilities\GoogleTokenVerifier;
 
 
 header("Access-Control-Allow-Origin: *");
@@ -13,8 +14,10 @@ header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+$envReader = \K_Utilities\KIgniter::GetEnvReader();
 
-$googleClientId = $_ENV["GOOGLE_CLIENT_ID"];
+$googleClientId = $envReader->get("GOOGLE_CLIENT_ID");
+
 // Get action from URL path via .htaccess
 $action = $_GET['action'] ?? '';
 $provider = $_GET['provider'] ?? '';

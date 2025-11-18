@@ -5,28 +5,39 @@ require_once dirname(__FILE__)."/KMessageCodeMap.php";
 // require_once dirname(__FILE__)."/../DB_Utilities/MYSQL_DBTool.php";
 // require_once dirname(__FILE__)."/../Log_Utilities/LogToolCreator.php";
 require_once dirname(__FILE__)."/01ModuleConfigReader.php";
+require_once dirname(__FILE__)."/KEnvReader.php";
 class KIgniter
 {
 
 
-    public static function Ignite()
+    private static $envReader = null; 
+    private static function createEnvReader()
     {
-        // global $globalSettings,$dbSetUpConfigs; 
+        
+        $envPath = __DIR__."/../.env";            
+        $envReader = new KEnvReader($envPath);
+
+        return $envReader;
+    }
+
+    public static function GetEnvReader()
+    {
+        if(self::$envReader == null)
+        {
+            self::$envReader = self::createEnvReader();
+        }
+
+        return $envReader;
+    }
+
+
+
+    public static function Ignite()
+    { 
         $configPath = __DIR__."/../ModuleConfig.json";
-            
-        // $servername = $dbSetUpConfigs["servername"];
-        // $username =  $dbSetUpConfigs["username"];
-        // $password =  $dbSetUpConfigs["password"];
-        // $dbname =  $dbSetUpConfigs["dbname"];         
 
-                    
-        //todo make dbtool creator
-       // $dbTool =  new \DB_Utilities\MYSQL_DBTool($servername,$username,$password,$dbname);
-    
-        // $dbTool->connectToDB();
-        // $currentDBLogTool  = \Log_Utilities\LogToolCreator::getCreateLogFn("db")($dbTool,$settings);
-
-        // $currentDBLogTool->log("hihi im here :)");
+        self::$envReader = self::createEnvReader();
+        
         $configReader =  ModuleConfigReader::createNewConfigs([] );
 
         $configReaderJSON = new  JSONFileReader($configReader);
@@ -38,10 +49,7 @@ class KIgniter
 
         $configReader =  ModuleConfigReader::createNewConfigs($configs );
 
-        return $configReader;
-        // $configs->addConfig("currentLogTool",$currentDBLogTool);
-        // $configs->addConfig("currentDBLogTool",$currentDBLogTool);
-        // $configs->addConfig("currentDbTool",$dbTool);
+        return $configReader; 
     }
 
 
