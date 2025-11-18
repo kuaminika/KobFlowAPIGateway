@@ -30,7 +30,7 @@ $res= $gtv->verify($input["id_token"]);
 $res["input"] = $input;
 //echo json_encode($res);
 
-$port = $_ENV["USER_SERVICE_PORT"];
+$port =  $envReader->get("USER_SERVICE_PORT"); 
 $data = $res["payload"];
 $data["providerUserId"] = $data["sub"];
 $data["provider"]="google"; //TODO : this should not be hardcoded
