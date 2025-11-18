@@ -27,7 +27,7 @@ class KIgniter
             self::$envReader = self::createEnvReader();
         }
 
-        return $envReader;
+        return self::$envReader;
     }
 
 
