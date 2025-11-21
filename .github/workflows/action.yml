@@ -5,6 +5,7 @@ on:
     branches:
       - dev   # DEV branch
       - master  # PROD branch
+      - dev* # any dev experiences
 
 jobs:
   # 1️⃣ BUILD JOB — Creates ZIP artifact
@@ -67,6 +68,20 @@ jobs:
             unzip -o kobflow.zip -d .
             rm kobflow.zip
             echo "✅ Code deployed successfully"
+            
+      - name: Generate .env file 
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+           ENV_FILE="${{ vars.ENV_DIR }}/.env"
+           cat > $ENV_FILE << EOL
+           GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}
+           USER_SERVICE_PORT=${{ vars.USER_SERVICE_PORT }}
+           EOL          
 
       - name: Generate ModuleConfig.json dynamically
         uses: appleboy/ssh-action@v1.2.2
