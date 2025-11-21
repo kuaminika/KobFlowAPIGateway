@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Make sure rewrite works only if it's not an existing file or folder
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Capture both /auth/google and /auth/google/something
+RewriteRule ^([^/]+)/?([^/]*)$ index.php?action=$1&provider=$2 [L,QSA]
