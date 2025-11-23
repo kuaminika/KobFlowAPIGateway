@@ -105,7 +105,8 @@ jobs:
                   "Merchant": ${{ vars.MERCHANT_PORT }},
                   "IncomeSource": ${{ vars.INCOME_SOURCE_PORT }},
                   "IncomeCategory": ${{ vars.INCOME_CATEGORY_PORT }},
-                  "KobHolder": ${{ vars.KOB_HOLDER_PORT }}
+                  "KobHolder": ${{ vars.KOB_HOLDER_PORT }},
+                  "Log": ${{ vars.LOG_PORT }}
                 }
               }
             }
